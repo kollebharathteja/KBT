@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KBT - Dashboard</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .card { width: 380px; }
+  .welcome { color: var(--text); font-size: 20px; margin: 10px 0 6px; }
+  .sub { color: var(--text-dim); font-size: 13px; margin-bottom: 26px; }
+  .logout-btn { margin-top: 10px; background: transparent; border: 1px solid var(--glass-border); color: var(--text); }
+  .logout-btn:hover { background: rgba(255,255,255,0.08); }
+</style>
+</head>
+<body>
+  <div class="bg-blob blob-1"></div>
+  <div class="bg-blob blob-2"></div>
+  <div class="bg-blob blob-3"></div>
+
+  <main class="card">
+    <div class="avatar">
+      <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" fill="currentColor"/><path d="M4 20c0-4.4 3.6-7 8-7s8 2.6 8 7" fill="currentColor"/></svg>
+    </div>
+    <p class="brand">KBT</p>
+    <h2 class="welcome" id="welcomeMsg">Welcome</h2>
+    <p class="sub">You're logged in. This is where your site's real content and features go.</p>
+    <button class="submit-btn logout-btn" id="logoutBtn">LOG OUT</button>
+  </main>
+
+  <script>
+    const token = localStorage.getItem('kbt_token') || sessionStorage.getItem('kbt_token');
+    const username = localStorage.getItem('kbt_username') || sessionStorage.getItem('kbt_username');
+
+    if (!token) {
+      window.location.href = 'index.html';
+    } else {
+      document.getElementById('welcomeMsg').textContent = 'Welcome, ' + username;
+    }
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      localStorage.clear();
+      sessionStorage.clear();
+      window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>

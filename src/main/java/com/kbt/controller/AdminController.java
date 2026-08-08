@@ -2,8 +2,10 @@ package com.kbt.controller;
 
 import com.kbt.model.SiteContent;
 import com.kbt.model.User;
+import com.kbt.model.WebsiteLink;
 import com.kbt.repository.SiteContentRepository;
 import com.kbt.repository.UserRepository;
+import com.kbt.repository.WebsiteLinkRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +26,7 @@ public class AdminController {
 
     private final SiteContentRepository contentRepository;
     private final UserRepository userRepository;
+    private final WebsiteLinkRepository websiteLinkRepository;
 
     // ---- Site content management ----
 
@@ -63,5 +66,24 @@ public class AdminController {
     @GetMapping("/ping")
     public Map<String, String> ping() {
         return Map.of("status", "K has full control");
+    }
+
+    // ---- Website link management (the site cards shown on the dashboard) ----
+
+    @GetMapping("/websites")
+    public List<WebsiteLink> getAllWebsites() {
+        return websiteLinkRepository.findAll();
+    }
+
+    @PostMapping("/websites")
+    public WebsiteLink addWebsite(@RequestBody WebsiteLink website) {
+        website.setId(null); // always create new; editing isn't needed for add/remove workflow
+        return websiteLinkRepository.save(website);
+    }
+
+    @DeleteMapping("/websites/{id}")
+    public ResponseEntity<Void> deleteWebsite(@PathVariable String id) {
+        websiteLinkRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -6,11 +6,7 @@
 <title>KBT - Dashboard</title>
 <link rel="stylesheet" href="css/style.css">
 <style>
-  .card { width: 380px; }
-  .welcome { color: var(--text); font-size: 20px; margin: 10px 0 6px; }
-  .sub { color: var(--text-dim); font-size: 13px; margin-bottom: 26px; }
-  .logout-btn { margin-top: 10px; background: transparent; border: 1px solid var(--glass-border); color: var(--text); }
-  .logout-btn:hover { background: rgba(255,255,255,0.08); }
+  body { overflow-y: auto; align-items: flex-start; display: block; }
 </style>
 </head>
 <body>
@@ -18,31 +14,36 @@
   <div class="bg-blob blob-2"></div>
   <div class="bg-blob blob-3"></div>
 
-  <main class="card">
-    <div class="avatar">
-      <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" fill="currentColor"/><path d="M4 20c0-4.4 3.6-7 8-7s8 2.6 8 7" fill="currentColor"/></svg>
+  <nav class="navbar">
+    <span class="nav-brand">KBT</span>
+    <div class="nav-tabs">
+      <button class="nav-tab active" data-tab="home">Home</button>
+      <button class="nav-tab" data-tab="profile">Profile</button>
     </div>
-    <p class="brand">KBT</p>
-    <h2 class="welcome" id="welcomeMsg">Welcome</h2>
-    <p class="sub">You're logged in. This is where your site's real content and features go.</p>
-    <button class="submit-btn logout-btn" id="logoutBtn">LOG OUT</button>
+    <button class="nav-logout" id="logoutBtn">Log out</button>
+  </nav>
+
+  <main class="page">
+
+    <section class="page-tab active" id="tab-home">
+      <h2 class="page-title" id="welcomeMsg">Welcome</h2>
+      <p class="page-sub">Your sites, all in one place.</p>
+      <div class="site-grid" id="siteGrid">
+        <p class="empty-state">Loading...</p>
+      </div>
+    </section>
+
+    <section class="page-tab" id="tab-profile">
+      <h2 class="page-title">Profile</h2>
+      <p class="page-sub">Your account details.</p>
+      <div class="profile-card">
+        <div class="profile-row"><span class="label">Username</span><span class="value" id="profUsername">-</span></div>
+        <div class="profile-row"><span class="label">Role</span><span class="value" id="profRole">-</span></div>
+      </div>
+    </section>
+
   </main>
 
-  <script>
-    const token = localStorage.getItem('kbt_token') || sessionStorage.getItem('kbt_token');
-    const username = localStorage.getItem('kbt_username') || sessionStorage.getItem('kbt_username');
-
-    if (!token) {
-      window.location.href = 'index.html';
-    } else {
-      document.getElementById('welcomeMsg').textContent = 'Welcome, ' + username;
-    }
-
-    document.getElementById('logoutBtn').addEventListener('click', () => {
-      localStorage.clear();
-      sessionStorage.clear();
-      window.location.href = 'index.html';
-    });
-  </script>
+  <script src="js/dashboard.js"></script>
 </body>
 </html>

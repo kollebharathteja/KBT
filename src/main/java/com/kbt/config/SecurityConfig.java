@@ -39,6 +39,7 @@ public class SecurityConfig {
                 .requestMatchers("/", "/index.html", "/dashboard.html", "/admin.html", "/css/**", "/js/**", "/images/**").permitAll()
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/api/content/**").permitAll()
+                .requestMatchers("/api/websites/**").permitAll()
                 .requestMatchers("/api/admin/**").hasRole("SUPER_ADMIN")
                 .anyRequest().authenticated()
             )

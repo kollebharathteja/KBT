@@ -52,6 +52,12 @@
       <tbody></tbody>
     </table>
 
+    <p class="section-title">
+      WEBSITES (shown as cards on every user's Home tab)
+      <button class="plus-btn" id="openWebsiteModal" title="Add website">+</button>
+    </p>
+    <div class="website-preview-grid" id="websitePreviewGrid"></div>
+
     <p class="section-title">USERS</p>
     <table id="usersTable">
       <thead><tr><th>Username</th><th>Email</th><th>Role</th><th></th></tr></thead>
@@ -60,6 +66,29 @@
 
     <button class="submit-btn logout-btn" id="logoutBtn">LOG OUT</button>
   </main>
+
+  <!-- Add Website modal -->
+  <div class="modal-backdrop" id="websiteModalBackdrop">
+    <div class="modal-card">
+      <div class="modal-header">
+        <span>Add a website</span>
+        <button class="modal-close" id="closeWebsiteModal">&times;</button>
+      </div>
+      <div class="panel-row">
+        <input type="text" id="wtitle" placeholder="Name (e.g. My Portfolio)">
+      </div>
+      <div class="panel-row">
+        <input type="text" id="wurl" placeholder="https://example.com">
+      </div>
+      <div class="panel-row">
+        <input type="text" id="wimage" placeholder="Image URL (optional)">
+      </div>
+      <div class="panel-row">
+        <input type="text" id="wdesc" placeholder="Short description">
+      </div>
+      <button class="submit-btn add-btn" id="saveWebsiteBtn" style="width:100%">ADD WEBSITE</button>
+    </div>
+  </div>
 
   <script src="js/admin.js"></script>
 </body>

@@ -75,5 +75,61 @@ document.getElementById('logoutBtn').addEventListener('click', () => {
   window.location.href = 'index.html';
 });
 
+async function loadWebsites() {
+  const res = await fetch(`${API_BASE}/websites`, { headers: authHeaders() });
+  if (!res.ok) return;
+  const sites = await res.json();
+  const grid = document.getElementById('websitePreviewGrid');
+  grid.innerHTML = sites.length ? sites.map(site => `
+    <div class="website-preview-card">
+      <button class="wp-del" data-id="${site.id}" title="Remove">&times;</button>
+      ${site.imageUrl ? `<img src="${site.imageUrl}" alt="">` : ''}
+      <p class="wp-title">${site.title}</p>
+      <p class="wp-desc">${site.description || ''}</p>
+    </div>
+  `).join('') : '<p class="empty-state" style="grid-column:1/-1;">No websites added yet. Click + to add one.</p>';
+
+  grid.querySelectorAll('.wp-del').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      await fetch(`${API_BASE}/websites/${btn.dataset.id}`, { method: 'DELETE', headers: authHeaders() });
+      loadWebsites();
+    });
+  });
+}
+
+// ---- Modal open/close ----
+const websiteModal = document.getElementById('websiteModalBackdrop');
+document.getElementById('openWebsiteModal').addEventListener('click', () => {
+  websiteModal.classList.add('active');
+});
+document.getElementById('closeWebsiteModal').addEventListener('click', () => {
+  websiteModal.classList.remove('active');
+});
+websiteModal.addEventListener('click', (e) => {
+  if (e.target === websiteModal) websiteModal.classList.remove('active');
+});
+
+document.getElementById('saveWebsiteBtn').addEventListener('click', async () => {
+  const title = document.getElementById('wtitle').value.trim();
+  const url = document.getElementById('wurl').value.trim();
+  const imageUrl = document.getElementById('wimage').value.trim();
+  const description = document.getElementById('wdesc').value.trim();
+  if (!title || !url) return alert('Name and URL are required.');
+
+  await fetch(`${API_BASE}/websites`, {
+    method: 'POST',
+    headers: authHeaders(),
+    body: JSON.stringify({ title, url, imageUrl, description })
+  });
+
+  document.getElementById('wtitle').value = '';
+  document.getElementById('wurl').value = '';
+  document.getElementById('wimage').value = '';
+  document.getElementById('wdesc').value = '';
+  websiteModal.classList.remove('active');
+  loadWebsites();
+});
+
 loadContent();
 loadUsers();
+loadWebsites();
